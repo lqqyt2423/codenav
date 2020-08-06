@@ -7,6 +7,11 @@
 		"vscode": "^1.47.0"
 	},
 	"publisher": "liqiqiang",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/lqqyt2423/codenav.git"
+	},
+	"homepage": "https://github.com/lqqyt2423/codenav#readme",
 	"categories": [
 		"Other"
 	],
