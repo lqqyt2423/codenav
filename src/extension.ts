@@ -52,6 +52,7 @@ export function activate(context: vscode.ExtensionContext) {
 
 	registerCommandNice('codenav.disable', () => {
 		setMode(Mode.OFF);
+		activedCtx.set(false);
 	});
 
 	registerCommandNice('codenav.type.esc', () => {
