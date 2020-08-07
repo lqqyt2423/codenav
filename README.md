@@ -1,71 +1,26 @@
 # codenav README
 
-开启功能后，实现单个键快速跳转的功能。在开启快速跳转功能后，只读，不能编辑。
+A better way to read code, only press one key to: jump to declaration, navigate back and navigate forward.
 
-关闭功能后可正常编写代码。
+更好的方式去阅读源码，跳转至函数定义、前进或后退仅需按一个键。
 
 ## Features
 
-`command + shift + p` 后输入以下命令：
+`command + shift + p` then:
 
-- `Codenav: Enable` 开启功能
-- `Codenav: Disable` 关闭功能
+- `Codenav: Enable` => enable plugin function to read code quickly and can't edit code.
+- `Codenav: Disable` => disable plugin function to the normal mode.
 
-在功能开启状态时，以下快捷键对应命令：
+When you enabled, then you can press key:
 
-- `i` 关闭功能
-- `s` 快速跳转至函数定义 `editor.action.goToDeclaration`
-- `d` 返回 `workbench.action.navigateBack`
-- `f` 前进 `workbench.action.navigateForward`
-
-## Requirements
-
-If you have any requirements or dependencies, add a section describing those and how to install and configure them.
-
-## Extension Settings
-
-Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
-
-For example:
-
-This extension contributes the following settings:
-
-* `myExtension.enable`: enable/disable this extension
-* `myExtension.thing`: set to `blah` to do something
-
-## Known Issues
-
-Calling out known issues can help limit users opening duplicate issues against your extension.
-
-## Release Notes
-
-Users appreciate release notes as you update your extension.
-
-### 1.0.0
-
-Initial release of ...
-
-### 1.0.1
-
-Fixed issue #.
-
-### 1.1.0
-
-Added features X, Y, and Z.
-
------------------------------------------------------------------------------------------------------------
-
-## Working with Markdown
-
-**Note:** You can author your README using Visual Studio Code.  Here are some useful editor keyboard shortcuts:
-
-* Split the editor (`Cmd+\` on macOS or `Ctrl+\` on Windows and Linux)
-* Toggle preview (`Shift+CMD+V` on macOS or `Shift+Ctrl+V` on Windows and Linux)
-* Press `Ctrl+Space` (Windows, Linux) or `Cmd+Space` (macOS) to see a list of Markdown snippets
+- `s` => jump to declaration, use vscode command: `editor.action.goToDeclaration`
+- `d` => navigate back, use vscode command: `workbench.action.navigateBack`
+- `f` => navigate forward, use vscode command: `workbench.action.navigateForward`
+- `i` => to the normal mode
+- `esc` => to the readonly mode
 
 ### For more information
 
-* [Visual Studio Code's Markdown Support](http://code.visualstudio.com/docs/languages/markdown)
-* [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/)
+* [GitHub](https://github.com/lqqyt2423/codenav)
 
 **Enjoy!**

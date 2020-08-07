@@ -1,8 +1,8 @@
 {
 	"name": "codenav",
 	"displayName": "codenav",
-	"description": "simple navigate code for read",
-	"version": "0.0.1",
+	"description": "A better way to read code, only press one key to: jump to declaration, navigate back and navigate forward.",
+	"version": "0.0.2",
 	"engines": {
 		"vscode": "^1.47.0"
 	},
