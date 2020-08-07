@@ -10,6 +10,15 @@ const getModeText = (m: Mode) => {
 	return 'cn:readonly';
 };
 
+const setCursorStyle = (m: Mode) => {
+	if (!vscode.window.activeTextEditor) return;
+	const style = m == Mode.ON ? vscode.TextEditorCursorStyle.Block : vscode.TextEditorCursorStyle.Line;
+	const currentCursorStyle = vscode.window.activeTextEditor.options.cursorStyle;
+	if (style !== currentCursorStyle) {
+		vscode.window.activeTextEditor.options = { cursorStyle: style };
+	}
+};
+
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
@@ -40,6 +49,7 @@ export function activate(context: vscode.ExtensionContext) {
 	const setMode = (m: Mode) => {
 		// 开启过此模式，之后 esc 键也可以控制开启
 		if (mode == Mode.ON && m == Mode.OFF) activedCtx.set(true);
+		if (mode !== m) setCursorStyle(m);
 
 		mode = m;
 		statusBar.setText(getModeText(m));
