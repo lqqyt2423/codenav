@@ -1,12 +1,12 @@
 import * as vscode from 'vscode';
 
 enum Mode {
-	NORMAL,
-	READ,
+	OFF,
+	ON,
 }
 
 const getModeText = (m: Mode) => {
-	if (m === Mode.NORMAL) return 'cn:normal';
+	if (m === Mode.OFF) return 'cn:normal';
 	return 'cn:readonly';
 };
 
@@ -16,7 +16,7 @@ export function activate(context: vscode.ExtensionContext) {
 
 	// Use the console to output diagnostic information (console.log) and errors (console.error)
 	// This line of code will only be executed once when your extension is activated
-	console.log('Congratulations, your extension "codenav" is now active!');
+	// console.log('Congratulations, your extension "codenav" is now active!');
 
 	// The command has been defined in the package.json file
 	// Now provide the implementation of the command with registerCommand
@@ -32,29 +32,32 @@ export function activate(context: vscode.ExtensionContext) {
 	// 	vscode.window.showInformationMessage('Hello World from codenav, nice!');
 	// });
 
-	let mode = Mode.NORMAL;
+	let mode = Mode.OFF;
+	const modeCtx = new ContextKey('codenav.active');
+
 	const statusBar = new StatusBar(getModeText(mode));
 	const setMode = (m: Mode) => {
 		mode = m;
 		statusBar.setText(getModeText(m));
+		modeCtx.set(m === Mode.ON);
 	};
 
 	registerCommandNice('codenav.enable', () => {
-		setMode(Mode.READ);
+		setMode(Mode.ON);
 	});
 
 	registerCommandNice('codenav.disable', () => {
-		setMode(Mode.NORMAL);
+		setMode(Mode.OFF);
 	});
 
 	registerCommandNice('type', args => {
 		if (!vscode.window.activeTextEditor) return;
-		if (mode === Mode.NORMAL) return vscode.commands.executeCommand('default:type', args);
+		if (mode === Mode.OFF) return vscode.commands.executeCommand('default:type', args);
 
 		const { text } = args;
 		switch (text) {
 			case 'i':
-				setMode(Mode.NORMAL);
+				setMode(Mode.OFF);
 				break;
 			case 'f':
 				vscode.commands.executeCommand('workbench.action.navigateForward');
@@ -64,6 +67,31 @@ export function activate(context: vscode.ExtensionContext) {
 				break;
 			case 's':
 				vscode.commands.executeCommand('editor.action.goToDeclaration');
+				break;
+			default:
+				break;
+		}
+	});
+
+	registerCommandNice('codenav.type.move', (args) => {
+		if (!vscode.window.activeTextEditor) return;
+		if (mode === Mode.OFF) return;
+
+		switch (args.to) {
+			case 'left':
+				vscode.commands.executeCommand('cursorLeft');
+				break;
+			case 'right':
+				vscode.commands.executeCommand('cursorRight');
+				break;
+			case 'down':
+				vscode.commands.executeCommand('cursorDown');
+				break;
+			case 'tabright':
+				vscode.commands.executeCommand('cursorWordEndRight');
+				break;
+			case 'tableft':
+				vscode.commands.executeCommand('cursorWordStartLeft');
 				break;
 			default:
 				break;
@@ -91,5 +119,24 @@ class StatusBar {
 		}
 		this._lastText = text;
 		this._actual.text = this._lastText;
+	}
+}
+
+class ContextKey {
+	private _name: string;
+	private _lastValue: boolean;
+
+	constructor(name: string, value = false) {
+		this._name = name;
+		this._lastValue = false;
+		this.set(value);
+	}
+
+	public set(value: boolean): void {
+		if (this._lastValue === value) {
+			return;
+		}
+		this._lastValue = value;
+		vscode.commands.executeCommand('setContext', this._name, this._lastValue);
 	}
 }

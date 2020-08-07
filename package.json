@@ -29,6 +29,44 @@
 				"command": "codenav.disable",
 				"title": "Codenav: Disable"
 			}
+		],
+		"keybindings": [
+			{
+				"key": "Backspace",
+				"command": "codenav.type.move",
+				"args": { "to": "left" },
+				"when": "editorTextFocus && codenav.active"
+			},
+			{
+				"key": "Delete",
+				"command": "codenav.type.move",
+				"args": { "to": "right" },
+				"when": "editorTextFocus && codenav.active"
+			},
+			{
+				"key": "tab",
+				"command": "codenav.type.move",
+				"args": { "to": "tabright" },
+				"when": "editorTextFocus && codenav.active"
+			},
+			{
+				"key": "shift+tab",
+				"command": "codenav.type.move",
+				"args": { "to": "tableft" },
+				"when": "editorTextFocus && codenav.active"
+			},
+			{
+				"key": "Enter",
+				"command": "codenav.type.move",
+				"args": { "to": "down" },
+				"when": "editorTextFocus && codenav.active"
+			},
+			{
+				"key": "Space",
+				"command": "codenav.type.move",
+				"args": { "to": "right" },
+				"when": "editorTextFocus && codenav.active"
+			},
 		]
 	},
 	"scripts": {
