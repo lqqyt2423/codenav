@@ -32,6 +32,11 @@
 		],
 		"keybindings": [
 			{
+				"key": "Escape",
+				"command": "codenav.type.esc",
+				"when": "editorTextFocus && codenav.escforactive"
+			},
+			{
 				"key": "Backspace",
 				"command": "codenav.type.move",
 				"args": { "to": "left" },

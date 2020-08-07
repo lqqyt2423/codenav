@@ -34,9 +34,13 @@ export function activate(context: vscode.ExtensionContext) {
 
 	let mode = Mode.OFF;
 	const modeCtx = new ContextKey('codenav.active');
+	const activedCtx = new ContextKey('codenav.escforactive');
 
 	const statusBar = new StatusBar(getModeText(mode));
 	const setMode = (m: Mode) => {
+		// 开启过此模式，之后 esc 键也可以控制开启
+		if (mode == Mode.ON && m == Mode.OFF) activedCtx.set(true);
+
 		mode = m;
 		statusBar.setText(getModeText(m));
 		modeCtx.set(m === Mode.ON);
@@ -48,6 +52,11 @@ export function activate(context: vscode.ExtensionContext) {
 
 	registerCommandNice('codenav.disable', () => {
 		setMode(Mode.OFF);
+	});
+
+	registerCommandNice('codenav.type.esc', () => {
+		if (!vscode.window.activeTextEditor) return;
+		setMode(Mode.ON);
 	});
 
 	registerCommandNice('type', args => {
