@@ -71,7 +71,7 @@
 				"command": "codenav.type.move",
 				"args": { "to": "right" },
 				"when": "editorTextFocus && codenav.active"
-			},
+			}
 		]
 	},
 	"scripts": {
