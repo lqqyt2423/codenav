@@ -12,7 +12,7 @@ const getModeText = (m: Mode) => {
 
 const setCursorStyle = (m: Mode) => {
 	if (!vscode.window.activeTextEditor) return;
-	const style = m == Mode.ON ? vscode.TextEditorCursorStyle.Block : vscode.TextEditorCursorStyle.Line;
+	const style = m === Mode.ON ? vscode.TextEditorCursorStyle.Block : vscode.TextEditorCursorStyle.Line;
 	const currentCursorStyle = vscode.window.activeTextEditor.options.cursorStyle;
 	if (style !== currentCursorStyle) {
 		vscode.window.activeTextEditor.options = { cursorStyle: style };
@@ -48,7 +48,7 @@ export function activate(context: vscode.ExtensionContext) {
 	const statusBar = new StatusBar(getModeText(mode));
 	const setMode = (m: Mode) => {
 		// 开启过此模式，之后 esc 键也可以控制开启
-		if (mode == Mode.ON && m == Mode.OFF) activedCtx.set(true);
+		if (mode === Mode.ON && m === Mode.OFF) activedCtx.set(true);
 		if (mode !== m) setCursorStyle(m);
 
 		mode = m;
