@@ -57,6 +57,11 @@ export function activate(context: vscode.ExtensionContext) {
 		control.setMode(Mode.ON);
 	});
 
+	// when mode is on, do nothing
+	registerCommandNice('replacePreviousChar', args => {
+		if (control.getMode() === Mode.OFF) vscode.commands.executeCommand('default:replacePreviousChar', args);
+	});
+
 	registerCommandNice('type', args => {
 		if (!vscode.window.activeTextEditor) return;
 		if (control.getMode() === Mode.OFF) return vscode.commands.executeCommand('default:type', args);
@@ -176,8 +181,6 @@ class Control {
 	}
 
 	setMode(m: Mode, forceOff: boolean = false) {
-		console.log('setMode', m);
-
 		if (m === Mode.OFF) {
 			if (forceOff) {
 				this._activedCtx.set(false);
