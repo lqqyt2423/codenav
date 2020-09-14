@@ -6,8 +6,8 @@ enum Mode {
 }
 
 const getModeText = (m: Mode) => {
-	if (m === Mode.OFF) return 'cn:normal';
-	return 'cn:readonly';
+	if (m === Mode.OFF) return 'codenav:off';
+	return 'codenav:on';
 };
 
 const setCursorStyle = (m: Mode) => {
