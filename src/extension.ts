@@ -5,18 +5,14 @@ enum Mode {
 	ON,
 }
 
+interface IState {
+	'codenav.active': boolean;
+	'codenav.escforactive': boolean;
+}
+
 const getModeText = (m: Mode) => {
 	if (m === Mode.OFF) return 'codenav:off';
 	return 'codenav:on';
-};
-
-const setCursorStyle = (m: Mode) => {
-	if (!vscode.window.activeTextEditor) return;
-	const style = m === Mode.ON ? vscode.TextEditorCursorStyle.Block : vscode.TextEditorCursorStyle.Line;
-	const currentCursorStyle = vscode.window.activeTextEditor.options.cursorStyle;
-	if (style !== currentCursorStyle) {
-		vscode.window.activeTextEditor.options = { cursorStyle: style };
-	}
 };
 
 // this method is called when your extension is activated
@@ -41,43 +37,29 @@ export function activate(context: vscode.ExtensionContext) {
 	// 	vscode.window.showInformationMessage('Hello World from codenav, nice!');
 	// });
 
-	let mode = Mode.OFF;
-	const modeCtx = new ContextKey('codenav.active');
-	const activedCtx = new ContextKey('codenav.escforactive');
-
-	const statusBar = new StatusBar(getModeText(mode));
-	const setMode = (m: Mode) => {
-		// 开启过此模式，之后 esc 键也可以控制开启
-		if (mode === Mode.ON && m === Mode.OFF) activedCtx.set(true);
-		if (mode !== m) setCursorStyle(m);
-
-		mode = m;
-		statusBar.setText(getModeText(m));
-		modeCtx.set(m === Mode.ON);
-	};
+	const control = new Control(context);
 
 	registerCommandNice('codenav.enable', () => {
-		setMode(Mode.ON);
+		control.setMode(Mode.ON);
 	});
 
 	registerCommandNice('codenav.disable', () => {
-		setMode(Mode.OFF);
-		activedCtx.set(false);
+		control.setMode(Mode.OFF, true);
 	});
 
 	registerCommandNice('codenav.type.esc', () => {
 		if (!vscode.window.activeTextEditor) return;
-		setMode(Mode.ON);
+		control.setMode(Mode.ON);
 	});
 
 	registerCommandNice('type', args => {
 		if (!vscode.window.activeTextEditor) return;
-		if (mode === Mode.OFF) return vscode.commands.executeCommand('default:type', args);
+		if (control.getMode() === Mode.OFF) return vscode.commands.executeCommand('default:type', args);
 
 		const { text } = args;
 		switch (text) {
 			case 'i':
-				setMode(Mode.OFF);
+				control.setMode(Mode.OFF);
 				break;
 			case 'f':
 				vscode.commands.executeCommand('workbench.action.navigateForward');
@@ -95,7 +77,7 @@ export function activate(context: vscode.ExtensionContext) {
 
 	registerCommandNice('codenav.type.move', (args) => {
 		if (!vscode.window.activeTextEditor) return;
-		if (mode === Mode.OFF) return;
+		if (control.getMode() === Mode.OFF) return;
 
 		switch (args.to) {
 			case 'left':
@@ -158,5 +140,69 @@ class ContextKey {
 		}
 		this._lastValue = value;
 		vscode.commands.executeCommand('setContext', this._name, this._lastValue);
+	}
+}
+
+class Control {
+	private _modeCtx: ContextKey;
+	private _activedCtx: ContextKey;
+	private _context: vscode.ExtensionContext;
+	private _lastMode: Mode;
+	private _state: IState;
+	private _statusBar: StatusBar;
+
+	constructor(context: vscode.ExtensionContext) {
+		this._context = context;
+		this._modeCtx = new ContextKey('codenav.active');
+		this._activedCtx = new ContextKey('codenav.escforactive');
+
+		// init
+		const initState= this._state = context.globalState.get<IState>('state') || { 'codenav.active': false, 'codenav.escforactive': false };
+		this._modeCtx.set(initState['codenav.active']);
+		this._activedCtx.set(initState['codenav.escforactive']);
+		this._lastMode = initState['codenav.active'] ? Mode.ON : Mode.OFF;
+		this._statusBar = new StatusBar(getModeText(this._lastMode));
+
+		this.setMode(this._lastMode);
+	}
+
+	getMode() {
+		return this._lastMode;
+	}
+
+	setMode(m: Mode, forceOff: boolean = false) {
+		console.log('setMode', m);
+
+		if (m === Mode.OFF) {
+			if (forceOff) {
+				this._activedCtx.set(false);
+				this._state['codenav.escforactive'] = false;
+			}
+
+			// 开启过此模式，之后 esc 键也可以控制开启
+			else if (this._lastMode === Mode.ON) {
+				this._activedCtx.set(true);
+				this._state['codenav.escforactive'] = true;
+			}
+		}
+
+		this.setCursorStyle(m);
+		this._statusBar.setText(getModeText(m));
+		this._modeCtx.set(m === Mode.ON);
+		this._state['codenav.active'] = m === Mode.ON;
+
+		this._lastMode = m;
+
+		// save state
+		this._context.globalState.update('state', this._state);
+	}
+
+	setCursorStyle(m: Mode) {
+		if (!vscode.window.activeTextEditor) return;
+		const style = m === Mode.ON ? vscode.TextEditorCursorStyle.Block : vscode.TextEditorCursorStyle.Line;
+		const currentCursorStyle = vscode.window.activeTextEditor.options.cursorStyle;
+		if (style !== currentCursorStyle) {
+			vscode.window.activeTextEditor.options = { cursorStyle: style };
+		}
 	}
 }
