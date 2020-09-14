@@ -11,6 +11,8 @@ A better way to read code, only press one key to: jump to declaration, navigate 
 - `Codenav: Enable` => enable plugin function to read code quickly and can't edit code.
 - `Codenav: Disable` => disable plugin function to the normal mode.
 
+The status bar show current status: `codenav:on` or `codenav:off`.
+
 When you enabled, then you can press key:
 
 - `s` => jump to declaration, use vscode command: `editor.action.goToDeclaration`
