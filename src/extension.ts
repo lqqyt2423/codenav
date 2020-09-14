@@ -39,6 +39,11 @@ export function activate(context: vscode.ExtensionContext) {
 
 	const control = new Control(context);
 
+	// when split window, setCursorStyle
+	context.subscriptions.push(vscode.window.onDidChangeActiveTextEditor(() => {
+		control.setCursorStyle(control.getMode());
+	}));
+
 	registerCommandNice('codenav.enable', () => {
 		control.setMode(Mode.ON);
 	});
