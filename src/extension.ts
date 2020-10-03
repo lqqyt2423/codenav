@@ -81,7 +81,7 @@ export function activate(context: vscode.ExtensionContext) {
 				vscode.commands.executeCommand('editor.action.goToDeclaration');
 				break;
 			case 'a':
-				vscode.commands.executeCommand('editor.action.gotoImplementation');
+				vscode.commands.executeCommand('editor.action.goToImplementation');
 				break;
 			default:
 				break;

@@ -16,7 +16,7 @@ The status bar show current status: `codenav:on` or `codenav:off`.
 When you enabled, then you can press key:
 
 - `s` => jump to declaration, use vscode command: `editor.action.goToDeclaration`
-- `a` => jump to implementation, use vscode command: `editor.action.gotoImplementation`
+- `a` => jump to implementation, use vscode command: `editor.action.goToImplementation`
 - `d` => navigate back, use vscode command: `workbench.action.navigateBack`
 - `f` => navigate forward, use vscode command: `workbench.action.navigateForward`
 - `i` => to the normal mode
