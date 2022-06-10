@@ -19,6 +19,7 @@ When you enabled, then you can press key:
 - `a` => jump to implementation, use vscode command: `editor.action.goToImplementation`
 - `d` => navigate back, use vscode command: `workbench.action.navigateBack`
 - `f` => navigate forward, use vscode command: `workbench.action.navigateForward`
+- `r` => go to source definition, only effect in ts or js project, use vscode command: `typescript.goToSourceDefinition`
 - `i` => to the normal mode
 - `esc` => to the readonly mode
 

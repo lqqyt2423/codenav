@@ -83,6 +83,10 @@ export function activate(context: vscode.ExtensionContext) {
 			case 'a':
 				vscode.commands.executeCommand('editor.action.goToImplementation');
 				break;
+			case 'r':
+				if (vscode.languages.match(['javascript', 'typescript'], vscode.window.activeTextEditor.document) === 10) {
+					vscode.commands.executeCommand('typescript.goToSourceDefinition');
+				}
 			default:
 				break;
 		}
