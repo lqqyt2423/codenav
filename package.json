@@ -2,14 +2,13 @@
 	"name": "codenav",
 	"displayName": "codenav",
 	"description": "A better way to read code, only press one key to: jump to declaration, navigate back and navigate forward.",
-	"version": "0.1.2",
+	"version": "0.1.3",
 	"engines": {
-		"vscode": "^1.47.0"
+		"vscode": "^1.68.0"
 	},
 	"publisher": "liqiqiang",
 	"repository": {
-		"type": "git",
-		"url": "git+https://github.com/lqqyt2423/codenav.git"
+		"url": "https://github.com/lqqyt2423/codenav"
 	},
 	"homepage": "https://github.com/lqqyt2423/codenav#readme",
 	"categories": [
