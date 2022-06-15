@@ -27,6 +27,14 @@
 			{
 				"command": "codenav.disable",
 				"title": "Codenav: Disable"
+			},
+			{
+				"command": "codenav.formatOnSave.toggle",
+				"title": "Codenav: Toggle editor.formatOnSave"
+			},
+			{
+				"command": "codenav.eslint.enable.toggle",
+				"title": "Codenav: Toggle eslint.enable"
 			}
 		],
 		"keybindings": [

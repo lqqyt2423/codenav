@@ -116,6 +116,32 @@ export function activate(context: vscode.ExtensionContext) {
 				break;
 		}
 	});
+	
+
+	// some other functions
+
+	const toggleConfig = (section: string, prop: string) => {
+		const config = vscode.workspace.getConfiguration(section);
+		const detail = config.inspect(prop);
+
+		if (detail?.workspaceValue != null) {
+			console.log(`workspace ${section}.${prop} change to ${!detail.workspaceValue}`);
+			config.update(prop, !detail.workspaceValue);
+			return;
+		}
+
+		if (detail?.globalValue != null) {
+			console.log(`global ${section}.${prop} change to ${!detail.globalValue}`);
+			config.update(prop, !detail.globalValue, 1);
+			return;
+		}
+	}
+	registerCommandNice('codenav.formatOnSave.toggle', () => {
+		toggleConfig('editor', 'formatOnSave');
+	});
+	registerCommandNice('codenav.eslint.enable.toggle', () => {
+		toggleConfig('eslint', 'enable');
+	});
 }
 
 // this method is called when your extension is deactivated
