@@ -71,6 +71,14 @@ export function activate(context: vscode.ExtensionContext) {
 			case 'i':
 				control.setMode(Mode.OFF);
 				break;
+			case 'o':
+				control.setMode(Mode.OFF);
+				vscode.commands.executeCommand('editor.action.insertLineAfter');
+				break;
+			case 'O':
+				control.setMode(Mode.OFF);
+				vscode.commands.executeCommand('editor.action.insertLineBefore');
+				break;
 			case 'f':
 				vscode.commands.executeCommand('workbench.action.navigateForward');
 				break;
@@ -87,6 +95,19 @@ export function activate(context: vscode.ExtensionContext) {
 				if (vscode.languages.match(['javascript', 'typescript'], vscode.window.activeTextEditor.document) === 10) {
 					vscode.commands.executeCommand('typescript.goToSourceDefinition');
 				}
+				break;
+			case 'h':
+				vscode.commands.executeCommand('cursorLeft');
+				break;
+			case 'j':
+				vscode.commands.executeCommand('cursorDown');
+				break;
+			case 'k':
+				vscode.commands.executeCommand('cursorUp');
+				break;
+			case 'l':
+				vscode.commands.executeCommand('cursorRight');
+				break;
 			default:
 				break;
 		}
